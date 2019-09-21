@@ -25,7 +25,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/buscador/recetas/{nombre}", name="buscadorRecetasAPI", methods={"GET", "POST"})
+     * @Route("/api/buscador/recetas/{nombre}", name="buscadorRecetasAPI", methods={"POST"})
      * @param string $nombre
      * @return Response
      * @throws GuzzleException
@@ -34,6 +34,20 @@ class ApiController extends AbstractController
     {
 
         $response = $this->client->request('GET', '?q='.$nombre);
+
+        return new Response($response->getBody()->getContents());
+
+    }
+
+    /**
+     * @Route("/api/listado/recetas", name="listadoRecetasAPI", methods={"GET"})
+     * @return Response
+     * @throws GuzzleException
+     */
+    public function listadoRecetasAPIAction()
+    {
+
+        $response = $this->client->request('GET', '');
 
         return new Response($response->getBody()->getContents());
 

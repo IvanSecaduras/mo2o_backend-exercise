@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listado de recetas{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        {% for receta in respuesta['results'] %}
+
+            <div class="col-sm-3 mt-2 mb-2">
+
+                <a href="{{ receta['href'] }}" target="_blank">
+
+                    <div class="card">
+                        {% if receta['thumbnail'] == "" %}
+                            <img class="card-img-top" src="{{ asset('images/nodisponible.png') }}" alt="Imagen no disponible">
+                        {% else %}
+                            <img class="rounded mx-auto d-block" src="{{ receta['thumbnail'] }}" alt="{{ receta['title'] }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h4 class="card-title">{{ receta['title'] }}</h4>
+                            <p class="card-text">{{ receta['ingredients'] }}</p>
+                        </div>
+                    </div>
+
+                </a>
+
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

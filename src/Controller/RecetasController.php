@@ -8,14 +8,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class BuscadorRecetasController extends AbstractController
+class RecetasController extends AbstractController
 {
     /**
-     * @Route("/buscador/recetas", name="buscadorRecetas")
+     * @Route("/recetas/buscador", name="buscadorRecetas")
      * @param Request $request
      * @return Response
      */
-    public function buscadorRecetasAction(Request $request)
+    public function buscadorAction(Request $request)
     {
         $form = $this->createForm(BuscadorRecetasType::class);
         $form->handleRequest($request);
@@ -26,14 +26,28 @@ class BuscadorRecetasController extends AbstractController
                 'nombre' => $form->get('buscador')->getData(),
             ]);
 
-            return $this->render('buscadorRecetas/index.html.twig', [
+            return $this->render('recetas/buscador.html.twig', [
                 'form' => $form->createView(),
                 'respuesta' => json_decode($respuesta->getContent(), true)
             ]);
         }
 
-        return $this->render('buscadorRecetas/index.html.twig', [
+        return $this->render('recetas/buscador.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/recetas/listado", name="listadoRecetas")
+     * @param Request $request
+     * @return Response
+     */
+    public function listadoAction(Request $request)
+    {
+        $respuesta = $this->forward('App\Controller\ApiController::listadoRecetasAPIAction');
+
+        return $this->render('recetas/listado.html.twig', [
+            'respuesta' => json_decode($respuesta->getContent(), true)
         ]);
     }
 }
