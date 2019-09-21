@@ -1,0 +1,12 @@
+body {
+    padding-top: 5rem;
+}
+
+.bg-custom {
+    background-color: #EB435F;
+}
+
+code {
+    display:block;
+    white-space:pre-wrap;
+}
