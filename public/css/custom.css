@@ -1,5 +1,5 @@
 body {
-    padding-top: 5rem;
+    padding-top: 8rem;
 }
 
 .bg-custom {
@@ -15,4 +15,8 @@ code {
     border-top: 1px solid #ccc;
     color: black;
     padding: 5%;
+}
+
+ul > li {
+    padding: 0.75rem 0;
 }

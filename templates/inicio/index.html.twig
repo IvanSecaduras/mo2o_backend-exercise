@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+
+    <h1>Documentación</h1>
+    <p class="lead">
+        Esta aplicación esta basada en el <a href="https://github.com/mo2o/backend-exercise" target="_blank">Ejercicio de entrevista técnica</a>.
+    </p>
+    <p class="lead">
+        Asi que, para generar los dos endpoints, hemos creado dos enlaces en el menú para poder acceder a ellos facilmente y comprender su uso.
+    </p>
+
+    <ul>
+
+        <li>
+            <h2>Buscar recetas</h2>
+            <p class="lead">
+                En este enlace, disponemos de un buscador en el cual podemos introducir la receta sobre la que queramos conocer
+                y nos devuelve los resultados junto a una serie de valores, los cuales son:
+            </p>
+            <ol>
+                <li>Título de la receta.</li>
+                <li>Enlace a la receta completa.</li>
+                <li>Ingredientes</li>
+                <li>Imagen de la receta (si es que dispone de ella)</li>
+            </ol>
+        </li>
+
+        <li>
+            <h2>Listar recetas</h2>
+            <p class="lead">
+                En este enlace, nos aparecerán una serie de recetas y las mostramos en modo de tarjetas.
+                Si pinchas sobre ellas, nos llevan a la receta completa para que así podamos seguir todos los pasos.
+            </p>
+        </li>
+    </ul>
+
+{% endblock %}
