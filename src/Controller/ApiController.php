@@ -5,6 +5,7 @@ namespace App\Controller;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,7 +26,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/buscador/recetas/{nombre}", name="buscadorRecetasAPI", methods={"POST"})
+     * @Route("/api/buscador/recetas/{nombre}", name="buscadorRecetasAPI", methods={"GET","POST"})
      * @param string $nombre
      * @return Response
      * @throws GuzzleException
@@ -35,7 +36,9 @@ class ApiController extends AbstractController
 
         $response = $this->client->request('GET', '?q='.$nombre);
 
-        return new Response($response->getBody()->getContents());
+        $resultados = json_decode($response->getBody()->getContents())->results;
+
+        return new JsonResponse($resultados, 200);
 
     }
 
@@ -49,7 +52,8 @@ class ApiController extends AbstractController
 
         $response = $this->client->request('GET', '');
 
-        return new Response($response->getBody()->getContents());
+        $resultados = json_decode($response->getBody()->getContents())->results;
 
+        return new JsonResponse($resultados, 200);
     }
 }

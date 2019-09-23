@@ -18,7 +18,7 @@
 
     {% if respuesta is defined %}
         <h1>Resultado:</h1>
-        <code>{{ respuesta['results']|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}</code>
+        <code>{{ respuesta|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}</code>
     {% endif %}
 
 {% endblock %}
