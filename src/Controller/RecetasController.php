@@ -22,8 +22,8 @@ class RecetasController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $respuesta = $this->forward('App\Controller\ApiController::buscadorRecetasAPIAction', [
-                'nombre' => $form->get('buscador')->getData(),
+            $respuesta = $this->forward('App\Controller\ApiController::buscadorRecetasAPIAction', [], [
+                'q' => $form->get('buscador')->getData()
             ]);
 
             return $this->render('recetas/buscador.html.twig', [

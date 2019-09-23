@@ -4,9 +4,12 @@ namespace App\Controller;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
@@ -26,19 +29,29 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/buscador/recetas/{nombre}", name="buscadorRecetasAPI", methods={"GET","POST"})
-     * @param string $nombre
+     * @Route("/api/buscador/recetas", name="buscadorRecetasAPI", methods={"GET"})
+     * @param Request $request
      * @return Response
      * @throws GuzzleException
      */
-    public function buscadorRecetasAPIAction($nombre)
+    public function buscadorRecetasAPIAction(Request $request)
     {
 
-        $response = $this->client->request('GET', '?q='.$nombre);
+        $search = $request->query->get('q');
 
-        $resultados = json_decode($response->getBody()->getContents())->results;
+        try {
+            $response = $this->client->request('GET', '?q='.$search);
+        } catch (RequestException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
 
-        return new JsonResponse($resultados, 200);
+        if($response->getStatusCode() == 200){
+            $resultados = json_decode($response->getBody()->getContents())->results;
+
+            return new JsonResponse($resultados, 200);
+        }else{
+            throw new BadRequestHttpException('Error al realizar la petición.');
+        }
 
     }
 
@@ -50,10 +63,18 @@ class ApiController extends AbstractController
     public function listadoRecetasAPIAction()
     {
 
-        $response = $this->client->request('GET', '');
+        try {
+            $response = $this->client->request('GET', '');
+        } catch (RequestException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
 
-        $resultados = json_decode($response->getBody()->getContents())->results;
+        if($response->getStatusCode() == 200){
+            $resultados = json_decode($response->getBody()->getContents())->results;
 
-        return new JsonResponse($resultados, 200);
+            return new JsonResponse($resultados, 200);
+        }else{
+            throw new BadRequestHttpException('Error al realizar la petición.');
+        }
     }
 }

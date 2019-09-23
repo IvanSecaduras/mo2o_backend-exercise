@@ -11,13 +11,13 @@ class ApiControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('PUT', '/api/buscador/recetas/tortilla');
+        $client->request('PUT', '/api/buscador/recetas?q=tortilla');
         $this->assertEquals(405, $client->getResponse()->getStatusCode());
 
-        $client->request('POST', '/api/buscador/recetas/tortilla');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $client->request('POST', '/api/buscador/recetas?q=tortilla');
+        $this->assertEquals(405, $client->getResponse()->getStatusCode());
 
-        $client->request('GET', '/api/buscador/recetas/tortilla');
+        $client->request('GET', '/api/buscador/recetas?q=tortilla');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
     }
