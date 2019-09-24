@@ -9,7 +9,7 @@
         Esta aplicación esta basada en el <a href="https://github.com/mo2o/backend-exercise" target="_blank">Ejercicio de entrevista técnica</a>.
     </p>
     <p class="lead">
-        Asi que, para generar los dos endpoints, hemos creado dos enlaces en el menú para poder acceder a ellos facilmente y comprender su uso.
+        Asi que, para generar los dos endpoints, he creado dos enlaces en el menú para poder acceder a ellos facilmente y comprender su uso.
     </p>
 
     <ul>
@@ -34,6 +34,34 @@
                 En este enlace, nos aparecerán una serie de recetas y las mostramos en modo de tarjetas.
                 Si pinchas sobre ellas, nos llevan a la receta completa para que así podamos seguir todos los pasos.
             </p>
+        </li>
+    </ul>
+
+    <h1>Endpoints</h1>
+
+    <ul>
+
+        <li>
+            <h2><a href="{{ path('buscadorRecetasAPI') }}" target="_blank">/api/buscador/recetas</a></h2>
+            <p class="lead">
+                Para este endpoint existen diferentes parámetros que podemos utilizar. La respuesta está dada en formato JSON
+                y para ver un ejemplo, podemos acceder al enlace <a href="{{ path('buscadorRecetas') }}">Buscar recetas</a>.
+            </p>
+            <ol>
+                <li>q: Cadena de texto para la búsqueda (obligatorio)</li>
+                <li>p: Número de página. (opcional)</li>
+            </ol>
+        </li>
+
+        <li>
+            <h2><a href="{{ path('listadoRecetasAPI') }}" target="_blank">/api/listado/recetas</a></h2>
+            <p class="lead">
+                Para este endpoint existen diferentes parámetros que podemos utilizar. La respuesta está dada en formato JSON
+                y para ver un ejemplo de uso, podemos acceder al enlace <a href="{{ path('listadoRecetas') }}">Listado de recetas</a>.
+            </p>
+            <ol>
+                <li>p: Número de página. (opcional)</li>
+            </ol>
         </li>
     </ul>
 

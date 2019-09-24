@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
@@ -38,43 +37,100 @@ class ApiController extends AbstractController
     {
 
         $search = $request->query->get('q');
+        $page = $request->query->get('p');
+
+        if(is_null($search)){
+            return new JsonResponse([
+                'status' => 404,
+                'message' => 'No se ha encontrado ningún parámetro de búsqueda',
+                'data' => []
+            ], 200);
+        }
 
         try {
-            $response = $this->client->request('GET', '?q='.$search);
+
+            if(is_null($page) || $page == 0){
+                $response = $this->client->request('GET', '?q='.$search);
+                $page = 1;
+            } else{
+                $response = $this->client->request('GET', '?q='.$search.'&p='.$page);
+            }
+
         } catch (RequestException $e) {
-            throw new BadRequestHttpException($e->getMessage());
+            return new JsonResponse([
+                'status' => 500,
+                'message' => $e->getMessage(),
+                'data' => []
+            ], 200);
         }
 
         if($response->getStatusCode() == 200){
             $resultados = json_decode($response->getBody()->getContents())->results;
 
-            return new JsonResponse($resultados, 200);
+            return new JsonResponse([
+                'status' => 200,
+                'message' => 'OK',
+                'data' => $resultados,
+                'next_page' => 'http://localhost:8000/api/buscador/recetas?q='.$search.'&p='.++$page
+            ], 200);
+
         }else{
-            throw new BadRequestHttpException('Error al realizar la petición.');
+
+            return new JsonResponse([
+                'status' => 500,
+                'message' => 'Error al realizar la petición.',
+                'data' => []
+            ], 200);
         }
 
     }
 
     /**
      * @Route("/api/listado/recetas", name="listadoRecetasAPI", methods={"GET"})
+     * @param Request $request
      * @return Response
      * @throws GuzzleException
      */
-    public function listadoRecetasAPIAction()
+    public function listadoRecetasAPIAction(Request $request)
     {
 
+        $page = $request->query->get('p');
+
         try {
-            $response = $this->client->request('GET', '');
+
+            if(is_null($page) || $page == 0){
+                $response = $this->client->request('GET', '');
+                $page = 1;
+            } else{
+                $response = $this->client->request('GET', '?p='.$page);
+            }
+
         } catch (RequestException $e) {
-            throw new BadRequestHttpException($e->getMessage());
+
+            return new JsonResponse([
+                'status' => 500,
+                'message' => $e->getMessage(),
+                'data' => []
+            ], 200);
+
         }
 
         if($response->getStatusCode() == 200){
             $resultados = json_decode($response->getBody()->getContents())->results;
 
-            return new JsonResponse($resultados, 200);
+            return new JsonResponse([
+                'status' => 200,
+                'message' => 'OK',
+                'data' => $resultados,
+                'next_page' => 'http://localhost:8000/api/listado/recetas?p='.++$page
+            ], 200);
+
         }else{
-            throw new BadRequestHttpException('Error al realizar la petición.');
+            return new JsonResponse([
+                'status' => 500,
+                'message' => 'Error al realizar la petición.',
+                'data' => []
+            ], 200);
         }
     }
 }
